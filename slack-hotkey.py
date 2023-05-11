@@ -113,7 +113,7 @@ class SlackCtrl:
     def postPunchIn(self, msg):
         if __debug__:
             self.dummySlack(':keyboard:' + msg + ':si: (test)')
-            self.dummySlack('Change status: Working')
+            self.dummySlack('Change status: Working (test)')
         else:
             self.postToChannel(':keyboard:' + msg + ':si:')
             self.changeStatus('Working', ':working-from-home:')
@@ -121,7 +121,7 @@ class SlackCtrl:
     def postPunchOut(self, msg):
         if __debug__:
             self.dummySlack(':keyboard:' + msg + ':syu: (test)')
-            self.dummySlack('Change status: Zzz.')
+            self.dummySlack('Change status: Zzz. (test)')
         else:
             self.postToChannel(':keyboard:' + msg + ':syu:')
             self.changeStatus('Zzz.', ':syu:')
@@ -129,7 +129,7 @@ class SlackCtrl:
     def postAway(self, msg):
         if __debug__:
             self.dummySlack(':keyboard:' + msg + ':ri: (test)')
-            self.dummySlack('Change status: AFK')
+            self.dummySlack('Change status: AFK (test)')
         else:
             self.postToChannel(':keyboard:' + msg + ':ri:')
             self.changeStatus('AFK', ':ri:')
@@ -137,7 +137,7 @@ class SlackCtrl:
     def postBack(self, msg):
         if __debug__:
             self.dummySlack(':keyboard:' + msg + ':modo: (test)')
-            self.dummySlack('Change status: Working')
+            self.dummySlack('Change status: Working (test)')
         else:
             self.postToChannel(':keyboard:' + msg + ':modo:')
             self.changeStatus('Working', ':working-from-home:')
@@ -181,7 +181,6 @@ with keyboard.GlobalHotKeys({
     '<ctrl>+<alt>+<shift>+j': function_punchout,
     '<ctrl>+<alt>+<shift>+k': function_away,
     '<ctrl>+<alt>+<shift>+l': function_back,
-    '<ctrl>+<alt>+<shift>+c': function_quit,
-    '<ctrl>+<27>': function_quit  # ESC (27) does not work
+    '<ctrl>+<alt>+<shift>+c': function_quit
 }) as hotkey:
     hotkey.join()
