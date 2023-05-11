@@ -181,7 +181,7 @@ with keyboard.GlobalHotKeys({
     '<ctrl>+<alt>+<shift>+j': function_punchout,
     '<ctrl>+<alt>+<shift>+k': function_away,
     '<ctrl>+<alt>+<shift>+l': function_back,
-    '<ctrl>+c': function_quit,
-    '<27>': function_quit  # ESC does not work
+    '<ctrl>+<alt>+<shift>+c': function_quit,
+    '<ctrl>+<27>': function_quit  # ESC (27) does not work
 }) as hotkey:
     hotkey.join()
