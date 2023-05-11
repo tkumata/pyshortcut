@@ -1,5 +1,5 @@
 # キーボードのショートカットキーで Slack に定型文を送る
-キー入力を待ち受けて特定のキーコンビネーションが押下されたら、特定の関数を蹴るものです。今回は、特定のキーコンビネーションが押下されたら Slack に定型文を送信しステータスを変更するようにしています。
+キー入力を待ち受けて特定のキーコンビネーションが押下されたら、特定の関数を蹴るものです。今回は特定のキーコンビネーションが押下されたら Slack に定型文を送信しかつ Slack ステータスを変更するようにしています。
 
 提供する機能は単純なものでコピペでも導入できるくらい敷居を下げたかったので、ソフトウェアアーキテクチャを無視してコードは単一ファイルで完結させています。但し、設定ファイルは別とします。
 
@@ -55,5 +55,4 @@ python3 slack-hotkey.py
 - `ctrl + shift + alt + j` = punch out to slack
 - `ctrl + shift + alt + k` = away from keyboard to slack
 - `ctrl + shift + alt + l` = come back to slack
-- `ctrl + c` = quit (廃止予定)
-- `ctlr + shift + alt + .` = quit (実装予定)
+- `ctlr + shift + alt + c` = quit
