@@ -143,38 +143,55 @@ class SlackCtrl:
             self.changeStatus('Working', ':working-from-home:')
 
 
-slack = SlackCtrl()
-
-
 # Begin working function
 def function_punchin():
-    logger.info('Call punch in function.')
-    slack.postPunchIn(' Begin working. ')
+    print(usage)
+    logger.info('Call a function of punch in.')
+    slack.postPunchIn('Begin working.')
+    print('---')
 
 
 # Finish working function
 def function_punchout():
-    logger.info('Call punch out function.')
-    slack.postPunchOut(' Finish working. ')
+    print(usage)
+    logger.info('Call a function of punch out.')
+    slack.postPunchOut('Finish working.')
+    print('---')
 
 
 # Away from keyboard function
 def function_away():
-    logger.info('Call away function.')
-    slack.postAway(' AFK. ')
+    print(usage)
+    logger.info('Call a function away.')
+    slack.postAway('AFK.')
+    print('---')
 
 
 # Come back function
 def function_back():
-    logger.info('Call back function.')
-    slack.postBack(' I am back. ')
+    print(usage)
+    logger.info('Call a function of back.')
+    slack.postBack('I am back.')
+    print('---')
 
 
 # Quit script function
 def function_quit():
     logger.debug('Quit')
     hotkey.stop()
+    print('Quit')
 
+
+usage = '''
+<ctrl>+<alt>+<shift>+h = Begin working
+<ctrl>+<alt>+<shift>+j = Finish working
+<ctrl>+<alt>+<shift>+k = AFK
+<ctrl>+<alt>+<shift>+l = Back
+<ctrl>+<alt>+<shift>+c = Quit
+'''[1:-1]
+
+slack = SlackCtrl()
+print(usage)
 
 with keyboard.GlobalHotKeys({
     '<ctrl>+<alt>+<shift>+h': function_punchin,
