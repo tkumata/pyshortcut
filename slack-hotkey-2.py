@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 if __debug__:
     logger.setLevel(logging.DEBUG)
 else:
-    logger.setLevel(logging.INFO)
+    logger.setLevel(logging.ERROR)
 log_fmt = logging.Formatter(
     "%(asctime)s %(levelname)s %(message)s",
     "%Y-%m-%d %H:%M:%S"
@@ -135,36 +135,36 @@ class SlackCtrl:
             else:
                 break
 
-    def postPunchIn(self, msg):
+    def postPunchIn(self, msg='Begin working.'):
         if __debug__:
             self.dummySlack(':keyboard:' + msg)
             self.dummySlack('Change status: Working')
         else:
-            self.postToChannel(':keyboard:' + msg)
+            self.postToChannel(':keyboard:<ctrl>+<alt>+<shift>+h ' + msg)
             self.changeStatus('Working', ':working-from-home:')
 
-    def postPunchOut(self, msg):
+    def postPunchOut(self, msg='Finish working.'):
         if __debug__:
             self.dummySlack(':keyboard:' + msg)
             self.dummySlack('Change status: Zzz')
         else:
-            self.postToChannel(':keyboard:' + msg)
+            self.postToChannel(':keyboard:<ctrl>+<alt>+<shift>+j ' + msg)
             self.changeStatus('Zzz.', ':syu:')
 
-    def postAway(self, msg):
+    def postAway(self, msg='Away from keyboard.'):
         if __debug__:
             self.dummySlack(':keyboard:' + msg)
             self.dummySlack('Change status: AFK')
         else:
-            self.postToChannel(':keyboard:' + msg)
+            self.postToChannel(':keyboard:<ctrl>+<alt>+<shift>+k ' + msg)
             self.changeStatus('AFK', ':ri:')
 
-    def postBack(self, msg):
+    def postBack(self, msg='I am back.'):
         if __debug__:
             self.dummySlack(':keyboard:' + msg)
             self.dummySlack('Change status: Working')
         else:
-            self.postToChannel(':keyboard:' + msg)
+            self.postToChannel(':keyboard:<ctrl>+<alt>+<shift>+l ' + msg)
             self.changeStatus('Working', ':working-from-home:')
 
 
@@ -173,28 +173,28 @@ def on_press(key):
         current.add(key)
         if all(k in current for k in COMBINATION_IN):
             print(usage)
-            logger.info('Punch in.')
-            slack.postPunchIn('Begin working.')
+            logger.info(current)
+            slack.postPunchIn()
     if key in COMBINATION_OUT:
         current.add(key)
         if all(k in current for k in COMBINATION_OUT):
             print(usage)
-            logger.info('Punch out.')
-            slack.postPunchOut('Finish working.')
+            logger.info(current)
+            slack.postPunchOut()
     if key in COMBINATION_AWAY:
         current.add(key)
         if all(k in current for k in COMBINATION_AWAY):
             print(usage)
-            logger.info('Away from keyboard.')
-            slack.postAway('Away from keyboard.')
+            logger.info(current)
+            slack.postAway()
     if key in COMBINATION_BACK:
         current.add(key)
         if all(k in current for k in COMBINATION_BACK):
             print(usage)
-            logger.info('I am back.')
-            slack.postBack('I am back.')
+            logger.info(current)
+            slack.postBack()
     if key == keyboard.Key.esc:
-        logger.info('Quit')
+        logger.info(key)
         listener.stop()
 
 
@@ -209,7 +209,7 @@ usage = '''<ctrl>+<alt>+<shift>+h = Begin working
 <ctrl>+<alt>+<shift>+j = Finish working
 <ctrl>+<alt>+<shift>+k = AFK
 <ctrl>+<alt>+<shift>+l = Back
-<ecs> = Quit
+<esc> = Quit
 '''
 print(usage)
 

@@ -40,13 +40,13 @@ vi config.json
 
 ## 使い方
 macOS の場合、Input Monitoring ソフトウエアとして認識されるので Security & Privacy で許可が必要です。
-
-本番 (Slack に投げる)
+### slack-hotkey.py
+#### 本番 (Slack に投げる)
 ```
 python3 -O slack-hotkey.py
 ```
 
-デバッグ (Slack に投げない)
+#### デバッグ (Slack に投げない)
 ```
 python3 slack-hotkey.py
 ```
@@ -56,3 +56,20 @@ python3 slack-hotkey.py
 - `ctrl + shift + alt + k` = away from keyboard to slack
 - `ctrl + shift + alt + l` = come back to slack
 - `ctlr + shift + alt + c` = quit
+
+### slack-hotkey-2.py
+#### 本番 (Slack に投げる)
+```
+python3 -O slack-hotkey-2.py
+```
+
+#### デバッグ (Slack に投げない)
+```
+python3 slack-hotkey-2.py
+```
+
+- `ctrl + shift + alt + h` = punch in to slack
+- `ctrl + shift + alt + j` = punch out to slack
+- `ctrl + shift + alt + k` = away from keyboard to slack
+- `ctrl + shift + alt + l` = come back to slack
+- `esc` = quit
