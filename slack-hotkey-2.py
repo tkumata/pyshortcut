@@ -7,6 +7,9 @@ from urllib.error import HTTPError, URLError
 
 from pynput import keyboard
 
+# init
+print('> Receiving hotkey')
+
 # get config file
 homedir = os.path.expanduser('~')
 f = open(homedir + '/.slack-hotkey/config.json', 'r')
@@ -16,8 +19,10 @@ f.close()
 # set logger
 logger = logging.getLogger(__name__)
 if __debug__:
+    print('> DEBUG mode')
     logger.setLevel(logging.DEBUG)
 else:
+    print('> Production mode')
     logger.setLevel(logging.ERROR)
 log_fmt = logging.Formatter(
     "%(asctime)s %(levelname)s %(message)s",

@@ -40,7 +40,7 @@ vi config.json
 
 ## コンパイル
 ```
-python3 -O -m PyInstaller slack-hotkey-2.py --onefile
+make
 ```
 
 
