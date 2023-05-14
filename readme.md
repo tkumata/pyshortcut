@@ -38,6 +38,12 @@ vi config.json
 ```
 
 
+## コンパイル
+```
+make
+```
+
+
 ## 使い方
 macOS の場合、Input Monitoring ソフトウエアとして認識されるので Security & Privacy で許可が必要です。
 ### slack-hotkey.py

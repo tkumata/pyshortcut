@@ -7,28 +7,30 @@ from urllib.error import HTTPError, URLError
 
 from pynput import keyboard
 
+# init
+print('> Receiving hotkey')
+
+# get config file
+homedir = os.path.expanduser('~')
+f = open(homedir + '/.slack-hotkey/config.json', 'r')
+config_json = json.load(f)
+f.close()
+
+# set logger
 logger = logging.getLogger(__name__)
 if __debug__:
+    print('> DEBUG mode')
     logger.setLevel(logging.DEBUG)
 else:
+    print('> Production mode')
     logger.setLevel(logging.ERROR)
 log_fmt = logging.Formatter(
     "%(asctime)s %(levelname)s %(message)s",
     "%Y-%m-%d %H:%M:%S"
 )
-log_handler = logging.FileHandler('slack-hotkey.log')
+log_handler = logging.FileHandler(homedir + '/.slack-hotkey/slack-hotkey.log')
 log_handler.setFormatter(log_fmt)
 logger.addHandler(log_handler)
-
-# Get current dir.
-if os.path.dirname(__file__):
-    exepath = os.path.dirname(__file__) + '/'
-else:
-    exepath = './'
-# Open config file.
-f = open(exepath + 'config.json', 'r')
-config_json = json.load(f)
-f.close()
 
 
 COMBINATION_IN = {
@@ -57,6 +59,13 @@ COMBINATION_BACK = {
     keyboard.Key.ctrl,
     keyboard.Key.alt,
     keyboard.KeyCode(char='l')
+}
+
+COMBINATION_TEST = {
+    keyboard.Key.shift,
+    keyboard.Key.ctrl,
+    keyboard.Key.alt,
+    keyboard.KeyCode(char='t')
 }
 
 
@@ -193,6 +202,11 @@ def on_press(key):
             print(usage)
             logger.info(current)
             slack.postBack()
+    if key in COMBINATION_TEST:
+        current.add(key)
+        if all(k in current for k in COMBINATION_TEST):
+            print(usage)
+            logger.info(current)
     if key == keyboard.Key.esc:
         logger.info(key)
         listener.stop()
@@ -209,6 +223,7 @@ usage = '''<ctrl>+<alt>+<shift>+h = Begin working
 <ctrl>+<alt>+<shift>+j = Finish working
 <ctrl>+<alt>+<shift>+k = AFK
 <ctrl>+<alt>+<shift>+l = Back
+<ctrl>+<alt>+<shift>+t = Test
 <esc> = Quit
 '''
 print(usage)
