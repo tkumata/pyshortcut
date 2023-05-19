@@ -38,14 +38,21 @@ vi config.json
 ```
 
 
-## コンパイル
+## ビルド
+本番ビルド
 ```
 make
+```
+
+デバッグビルド
+```
+make debug
 ```
 
 
 ## 使い方
 macOS の場合、Input Monitoring ソフトウエアとして認識されるので Security & Privacy で許可が必要です。
+
 ### slack-hotkey.py
 #### 本番 (Slack に投げる)
 ```
