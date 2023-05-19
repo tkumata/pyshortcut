@@ -1,5 +1,5 @@
 TARGET = slack-hotkey
-SRC = slack-hotkey-2.py
+SRC = slack-hotkey.py
 BIN = dist/slack-hotkey
 
 all: $(TARGET)
@@ -17,4 +17,4 @@ clean:
 	rm -rf *.spec dist build
 
 nuitka:
-	nuitka3 --onefile --standalone --macos-create-app-bundle --follow-imports -o slack-hotkey slack-hotkey-2.py
+	nuitka3 --onefile --standalone --macos-create-app-bundle --follow-imports -o slack-hotkey slack-hotkey.py

@@ -1,203 +1,129 @@
-import json
 import logging
 import os
-import urllib.parse
-import urllib.request
-from urllib.error import HTTPError, URLError
 
 from pynput import keyboard
 
-logger = logging.getLogger(__name__)
+from controller.slack import SlackCtrl
+
+# init
+print('> Receiving hotkey')
 
 if __debug__:
-    logger.setLevel(logging.DEBUG)
+    print('> DEBUG mode')
 else:
-    logger.setLevel(logging.INFO)
+    print('> Production mode')
 
+# get home dir
+homedir = os.path.expanduser('~')
+
+# set logger
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 log_fmt = logging.Formatter(
     "%(asctime)s %(levelname)s %(message)s",
     "%Y-%m-%d %H:%M:%S"
 )
-log_handler = logging.FileHandler('slack-hotkey.log')
+log_handler = logging.FileHandler(homedir + '/.slack-hotkey/slack-hotkey.log')
 log_handler.setFormatter(log_fmt)
 logger.addHandler(log_handler)
 
 
-# Get current dir.
-if os.path.dirname(__file__):
-    exepath = os.path.dirname(__file__) + '/'
-else:
-    exepath = './'
+COMBINATION_IN = {
+    keyboard.Key.shift,
+    keyboard.Key.ctrl,
+    keyboard.Key.alt,
+    keyboard.KeyCode(char='h')
+}
 
-# Open config file.
-f = open(exepath + 'config.json', 'r')
-config_json = json.load(f)
-f.close()
+COMBINATION_OUT = {
+    keyboard.Key.shift,
+    keyboard.Key.ctrl,
+    keyboard.Key.alt,
+    keyboard.KeyCode(char='j')
+}
 
+COMBINATION_AWAY = {
+    keyboard.Key.shift,
+    keyboard.Key.ctrl,
+    keyboard.Key.alt,
+    keyboard.KeyCode(char='k')
+}
 
-# Slack controller class
-class SlackCtrl:
-    def __init__(self):
-        self.TOKEN = config_json['token']
-        self.MEMBER_ID = config_json['member_id']
-        self.CHANNEL = config_json['channel']
+COMBINATION_BACK = {
+    keyboard.Key.shift,
+    keyboard.Key.ctrl,
+    keyboard.Key.alt,
+    keyboard.KeyCode(char='l')
+}
 
-    def dummySlack(self, message):
-        logger.debug(message)
-
-    def postToChannel(self, message):
-        headers = {
-            'Authorization': 'Bearer %s' % self.TOKEN,
-            'X-Slack-User': self.MEMBER_ID,
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-        params = {
-            'channel': self.CHANNEL,
-            'text': message,
-            'as_user': True
-        }
-        req = urllib.request.Request(
-            "https://slack.com/api/chat.postMessage",
-            method='POST',
-            data=json.dumps(params).encode('utf-8'),
-            headers=headers
-        )
-        i = 0
-        while True:
-            try:
-                logger.info('Post to channel ' + message)
-                urllib.request.urlopen(req)
-            except HTTPError as e:
-                if i + 1 == 3:
-                    raise
-                else:
-                    logger.error('Error code: ', e.code)
-            except URLError as e:
-                logger.error('Reason: ', e.reason)
-            else:
-                break
-
-    def changeStatus(self, status_text, status_emoji):
-        headers = {
-            'Authorization': 'Bearer %s' % self.TOKEN,
-            'X-Slack-User': self.MEMBER_ID,
-            'Content-Type': 'application/json; charset=utf-8'
-        }
-        params = {
-            'profile': {
-                'status_text': status_text,
-                'status_emoji': status_emoji
-            }
-        }
-        req = urllib.request.Request(
-            "https://slack.com/api/users.profile.set",
-            method='POST',
-            data=json.dumps(params).encode('utf-8'),
-            headers=headers
-        )
-        i = 0
-        while True:
-            try:
-                logger.info('Change status: ' + status_text)
-                urllib.request.urlopen(req)
-            except HTTPError as e:
-                if i + 1 == 3:
-                    raise
-                else:
-                    logger.error('Error code: ', e.code)
-            except URLError as e:
-                logger.error('Reason: ', e.reason)
-            else:
-                break
-
-    def postPunchIn(self, msg):
-        if __debug__:
-            self.dummySlack(':keyboard:' + msg + ':si: (test)')
-            self.dummySlack('Change status: Working (test)')
-        else:
-            self.postToChannel(':keyboard:' + msg + ':si:')
-            self.changeStatus('Working', ':working-from-home:')
-
-    def postPunchOut(self, msg):
-        if __debug__:
-            self.dummySlack(':keyboard:' + msg + ':syu: (test)')
-            self.dummySlack('Change status: Zzz. (test)')
-        else:
-            self.postToChannel(':keyboard:' + msg + ':syu:')
-            self.changeStatus('Zzz.', ':syu:')
-
-    def postAway(self, msg):
-        if __debug__:
-            self.dummySlack(':keyboard:' + msg + ':ri: (test)')
-            self.dummySlack('Change status: AFK (test)')
-        else:
-            self.postToChannel(':keyboard:' + msg + ':ri:')
-            self.changeStatus('AFK', ':ri:')
-
-    def postBack(self, msg):
-        if __debug__:
-            self.dummySlack(':keyboard:' + msg + ':modo: (test)')
-            self.dummySlack('Change status: Working (test)')
-        else:
-            self.postToChannel(':keyboard:' + msg + ':modo:')
-            self.changeStatus('Working', ':working-from-home:')
+COMBINATION_TEST = {
+    keyboard.Key.shift,
+    keyboard.Key.ctrl,
+    keyboard.Key.alt,
+    keyboard.KeyCode(char='t')
+}
 
 
-# Begin working function
-def function_punchin():
-    print(usage)
-    logger.info('Call a function of punch in.')
-    slack.postPunchIn('Begin working.')
-    print('---')
+def on_press(key):
+    if key in COMBINATION_IN:
+        current.add(key)
+        if all(k in current for k in COMBINATION_IN):
+            os.system('clear')
+            print(usage)
+            logger.info(current)
+            slack.postPunchIn()
+    if key in COMBINATION_OUT:
+        current.add(key)
+        if all(k in current for k in COMBINATION_OUT):
+            os.system('clear')
+            print(usage)
+            logger.info(current)
+            slack.postPunchOut()
+    if key in COMBINATION_AWAY:
+        current.add(key)
+        if all(k in current for k in COMBINATION_AWAY):
+            os.system('clear')
+            print(usage)
+            logger.info(current)
+            slack.postAway()
+    if key in COMBINATION_BACK:
+        current.add(key)
+        if all(k in current for k in COMBINATION_BACK):
+            os.system('clear')
+            print(usage)
+            logger.info(current)
+            slack.postBack()
+    if key in COMBINATION_TEST:
+        current.add(key)
+        if all(k in current for k in COMBINATION_TEST):
+            os.system('clear')
+            print(usage)
+            logger.info(current)
+    if key == keyboard.Key.esc:
+        logger.info(key)
+        listener.stop()
 
 
-# Finish working function
-def function_punchout():
-    print(usage)
-    logger.info('Call a function of punch out.')
-    slack.postPunchOut('Finish working.')
-    print('---')
+def on_release(key):
+    try:
+        current.remove(key)
+    except KeyError:
+        pass
 
 
-# Away from keyboard function
-def function_away():
-    print(usage)
-    logger.info('Call a function away.')
-    slack.postAway('AFK.')
-    print('---')
-
-
-# Come back function
-def function_back():
-    print(usage)
-    logger.info('Call a function of back.')
-    slack.postBack('I am back.')
-    print('---')
-
-
-# Quit script function
-def function_quit():
-    logger.debug('Quit')
-    hotkey.stop()
-    print('Quit')
-
-
-usage = '''
-<ctrl>+<alt>+<shift>+h = Begin working
+usage = '''<ctrl>+<alt>+<shift>+h = Begin working
 <ctrl>+<alt>+<shift>+j = Finish working
 <ctrl>+<alt>+<shift>+k = AFK
 <ctrl>+<alt>+<shift>+l = Back
-<ctrl>+<alt>+<shift>+c = Quit
-'''[1:-1]
+<ctrl>+<alt>+<shift>+t = Test
+<esc> = Quit
+'''
 
-slack = SlackCtrl()
+os.system('clear')
 print(usage)
 
-with keyboard.GlobalHotKeys({
-    '<ctrl>+<alt>+<shift>+h': function_punchin,
-    '<ctrl>+<alt>+<shift>+j': function_punchout,
-    '<ctrl>+<alt>+<shift>+k': function_away,
-    '<ctrl>+<alt>+<shift>+l': function_back,
-    '<ctrl>+<alt>+<shift>+c': function_quit
-}) as hotkey:
-    hotkey.join()
+current = set()
+slack = SlackCtrl(homedir, logger)
+
+with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+    listener.join()
