@@ -1,9 +1,7 @@
 # キーボードのショートカットキーで Slack に定型文を送る
-キー入力を待ち受けて特定のキーコンビネーションが押下されたら、特定の関数を蹴るものです。今回は特定のキーコンビネーションが押下されたら Slack に定型文を送信しかつ Slack ステータスを変更するようにしています。
+キー入力を待ち受けて特定のキーコンビネーションが押下されたら、特定の関数を実行します。今回は特定のキーコンビネーションが押下されたら Slack に定型文を送信しかつ Slack ステータスを変更するようにしています。
 
-提供する機能は単純なものでコピペでも導入できるくらい敷居を下げたかったので、ソフトウェアアーキテクチャを無視してコードは単一ファイルで完結させています。但し、設定ファイルは別とします。
-
-なお挙動としては、例えば iTerm でこのスクリプトを実行したら iTerm 上でキーコンビネーションが押下された時だけ発火します。他のアプリ上で押下しても反応しません。macOS の場合、Input Monitoring に認識されるので Security & Privacy で許可が必要です。
+なお挙動としては、例えば iTerm でこのスクリプトを実行したら iTerm 上で特定のキーコンビネーションが押下された時だけ発火します。他のアプリ上で押下しても反応しません。macOS の場合、Input Monitoring に認識されるので Security & Privacy で許可が必要です。
 
 
 ## 前提 1: ライブラリのインストール
@@ -39,46 +37,20 @@ vi config.json
 
 
 ## ビルド
-本番ビルド
+本番ビルドは実際に Slack に送信します。
 ```
 make
 ```
 
-デバッグビルド
+デバッグビルドは logger でログを残すだけです。
 ```
 make debug
 ```
 
 
 ## 使い方
-macOS の場合、Input Monitoring ソフトウエアとして認識されるので Security & Privacy で許可が必要です。
-
-### slack-hotkey.py
-#### 本番 (Slack に投げる)
 ```
-python3 -O slack-hotkey.py
-```
-
-#### デバッグ (Slack に投げない)
-```
-python3 slack-hotkey.py
-```
-
-- `ctrl + shift + alt + h` = punch in to slack
-- `ctrl + shift + alt + j` = punch out to slack
-- `ctrl + shift + alt + k` = away from keyboard to slack
-- `ctrl + shift + alt + l` = come back to slack
-- `ctlr + shift + alt + c` = quit
-
-### slack-hotkey-2.py
-#### 本番 (Slack に投げる)
-```
-python3 -O slack-hotkey-2.py
-```
-
-#### デバッグ (Slack に投げない)
-```
-python3 slack-hotkey-2.py
+slack-hotkey
 ```
 
 - `ctrl + shift + alt + h` = punch in to slack
