@@ -18,3 +18,4 @@ class Logger():
         )
         log_handler.setFormatter(log_fmt)
         logger.addHandler(log_handler)
+        return logger

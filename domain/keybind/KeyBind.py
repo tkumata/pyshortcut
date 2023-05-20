@@ -6,7 +6,7 @@ class KeyBind():
         self.logger = logger
 
     def punchIn(self):
-        self.logger.info('> Press hotkey, punch in.')
+        self.logger.info('> Return hotkey combination punch in.')
         return {
             keyboard.Key.shift,
             keyboard.Key.ctrl,
@@ -15,7 +15,7 @@ class KeyBind():
         }
 
     def punchOut(self):
-        self.logger.info('> Press hotkey, punch out.')
+        self.logger.info('> Return hotkey combination punch out.')
         return {
             keyboard.Key.shift,
             keyboard.Key.ctrl,
@@ -24,7 +24,7 @@ class KeyBind():
         }
 
     def away(self):
-        self.logger.info('Press hotkey, away.')
+        self.logger.info('> Return hotkey combination away.')
         return {
             keyboard.Key.shift,
             keyboard.Key.ctrl,
@@ -33,7 +33,7 @@ class KeyBind():
         }
 
     def back(self):
-        self.logger.info('> Press hotkey, back.')
+        self.logger.info('> Return hotkey combination backing.')
         return {
             keyboard.Key.shift,
             keyboard.Key.ctrl,
@@ -42,7 +42,7 @@ class KeyBind():
         }
 
     def test(self):
-        self.logger.info('> Press hotkey, test.')
+        self.logger.info('> Return hotkey combination test.')
         return {
             keyboard.Key.shift,
             keyboard.Key.ctrl,
