@@ -17,10 +17,16 @@ initVar = Common()
 homedir = initVar.getHome()
 
 log = Logger(homedir)
-logger = log.logger
+logger = log.getLogger()
 
 slack = SlackCtrl(homedir, logger)
+
 keybind = KeyBind(logger)
+hotkeyPunchin = keybind.punchIn()
+hotkeyPunchout = keybind.punchOut()
+hotkeyAwway = keybind.away()
+hotkeyBack = keybind.back()
+hotkeyTest = keybind.test()
 
 
 print('> Receiving hotkey')
@@ -46,37 +52,37 @@ current = set()
 
 # TODO: ロジックになっているので多純な呼び出しだけにできないか考える。
 def on_press(key):
-    if key in keybind.punchIn():
+    if key in hotkeyPunchin:
         current.add(key)
-        if all(k in current for k in keybind.punchIn()):
+        if all(k in current for k in hotkeyPunchin):
             os.system('clear')
             print(usage)
             logger.info(current)
             slack.postPunchIn()
-    if key in keybind.punchOut():
+    if key in hotkeyPunchout:
         current.add(key)
-        if all(k in current for k in keybind.punchOut()):
+        if all(k in current for k in hotkeyPunchout):
             os.system('clear')
             print(usage)
             logger.info(current)
             slack.postPunchOut()
-    if key in keybind.away():
+    if key in hotkeyAwway:
         current.add(key)
-        if all(k in current for k in keybind.away()):
+        if all(k in current for k in hotkeyAwway):
             os.system('clear')
             print(usage)
             logger.info(current)
             slack.postAway()
-    if key in keybind.back():
+    if key in hotkeyBack:
         current.add(key)
-        if all(k in current for k in keybind.back()):
+        if all(k in current for k in hotkeyBack):
             os.system('clear')
             print(usage)
             logger.info(current)
             slack.postBack()
-    if key in keybind.test():
+    if key in hotkeyTest:
         current.add(key)
-        if all(k in current for k in keybind.test()):
+        if all(k in current for k in hotkeyTest):
             os.system('clear')
             print(usage)
             logger.info(current)
