@@ -28,6 +28,13 @@ hotkeyAwway = keybind.away()
 hotkeyBack = keybind.back()
 hotkeyTest = keybind.test()
 
+usage = '''<ctrl>+<alt>+<shift>+h = Begin working
+<ctrl>+<alt>+<shift>+j = Finish working
+<ctrl>+<alt>+<shift>+k = AFK
+<ctrl>+<alt>+<shift>+l = Back
+<ctrl>+<alt>+<shift>+t = Test
+<esc> = Quit
+'''
 
 os.system('clear')
 print('> Receiving hotkey')
@@ -36,14 +43,6 @@ if __debug__:
     print('> DEBUG mode')
 else:
     print('> Production mode')
-
-usage = '''<ctrl>+<alt>+<shift>+h = Begin working
-<ctrl>+<alt>+<shift>+j = Finish working
-<ctrl>+<alt>+<shift>+k = AFK
-<ctrl>+<alt>+<shift>+l = Back
-<ctrl>+<alt>+<shift>+t = Test
-<esc> = Quit
-'''
 
 print(usage)
 current = set()
