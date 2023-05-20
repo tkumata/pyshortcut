@@ -17,7 +17,7 @@ class SlackCtrl():
         self.logger = logger
 
     def dummySlack(self, message):
-        self.logger.debug(message)
+        self.logger.debug('> ' + message)
 
     def postToChannel(self, message):
         headers = {
@@ -39,15 +39,15 @@ class SlackCtrl():
         i = 0
         while True:
             try:
-                self.logger.info('Post to channel ' + message)
+                self.logger.info('> Post to channel ' + message)
                 urllib.request.urlopen(req)
             except HTTPError as e:
                 if i + 1 == 3:
                     raise
                 else:
-                    self.logger.error('Error code: ', e.code)
+                    self.logger.error('> Error code: ', e.code)
             except URLError as e:
-                self.logger.error('Reason: ', e.reason)
+                self.logger.error('> Reason: ', e.reason)
             else:
                 break
 
@@ -72,15 +72,15 @@ class SlackCtrl():
         i = 0
         while True:
             try:
-                self.logger.info('Change status: ' + status_text)
+                self.logger.info('> Change status: ' + status_text)
                 urllib.request.urlopen(req)
             except HTTPError as e:
                 if i + 1 == 3:
                     raise
                 else:
-                    self.logger.error('Error code: ', e.code)
+                    self.logger.error('> Error code: ', e.code)
             except URLError as e:
-                self.logger.error('Reason: ', e.reason)
+                self.logger.error('> Reason: ', e.reason)
             else:
                 break
 

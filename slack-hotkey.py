@@ -3,18 +3,17 @@
 # それ以外は依存先に任せるもしくは取得する。
 #
 
-import os
-
 from pynput import keyboard
 
 from common.Common import Common
 from controller.SlackCtrl import SlackCtrl
 from domain.keybind.KeyBind import KeyBind
-from interface.logger.logger import Logger
+from interface.logger.Logger import Logger
 
 # オブジェクトやインスタンスの生成
 initVar = Common()
 homedir = initVar.getHome()
+initVar.refreshScreen()
 
 log = Logger(homedir)
 logger = log.getLogger()
@@ -28,23 +27,6 @@ hotkeyAwway = keybind.away()
 hotkeyBack = keybind.back()
 hotkeyTest = keybind.test()
 
-usage = '''<ctrl>+<alt>+<shift>+h = Begin working
-<ctrl>+<alt>+<shift>+j = Finish working
-<ctrl>+<alt>+<shift>+k = AFK
-<ctrl>+<alt>+<shift>+l = Back
-<ctrl>+<alt>+<shift>+t = Test
-<esc> = Quit
-'''
-
-os.system('clear')
-print('> Receiving hotkey')
-
-if __debug__:
-    print('> DEBUG mode')
-else:
-    print('> Production mode')
-
-print(usage)
 current = set()
 
 
@@ -53,38 +35,34 @@ def on_press(key):
     if key in hotkeyPunchin:
         current.add(key)
         if all(k in current for k in hotkeyPunchin):
-            os.system('clear')
-            print(usage)
+            initVar.refreshScreen()
             logger.info(current)
             slack.postPunchIn()
     if key in hotkeyPunchout:
         current.add(key)
         if all(k in current for k in hotkeyPunchout):
-            os.system('clear')
-            print(usage)
+            initVar.refreshScreen()
             logger.info(current)
             slack.postPunchOut()
     if key in hotkeyAwway:
         current.add(key)
         if all(k in current for k in hotkeyAwway):
-            os.system('clear')
-            print(usage)
+            initVar.refreshScreen()
             logger.info(current)
             slack.postAway()
     if key in hotkeyBack:
         current.add(key)
         if all(k in current for k in hotkeyBack):
-            os.system('clear')
-            print(usage)
+            initVar.refreshScreen()
             logger.info(current)
             slack.postBack()
     if key in hotkeyTest:
         current.add(key)
         if all(k in current for k in hotkeyTest):
-            os.system('clear')
-            print(usage)
+            initVar.refreshScreen()
             logger.info(current)
     if key == keyboard.Key.esc:
+        initVar.refreshScreen()
         logger.info(key)
         listener.stop()
 
