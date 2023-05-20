@@ -1,3 +1,7 @@
+#
+# Slack  API を使うだけの責務。
+#
+
 import json
 import urllib.parse
 import urllib.request

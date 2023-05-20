@@ -1,3 +1,7 @@
+#
+# ログを記録する責務
+#
+
 import logging
 
 

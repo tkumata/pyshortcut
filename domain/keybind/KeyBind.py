@@ -1,3 +1,7 @@
+#
+# ホットキーのコンビネーションを定義して返すだけの責務。
+#
+
 from pynput import keyboard
 
 
