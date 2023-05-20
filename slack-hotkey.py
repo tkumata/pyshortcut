@@ -7,7 +7,7 @@ import os
 
 from pynput import keyboard
 
-from common import Common
+from common.Common import Common
 from controller.SlackCtrl import SlackCtrl
 from domain.keybind.KeyBind import KeyBind
 from interface.logger.logger import Logger
