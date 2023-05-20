@@ -29,6 +29,7 @@ hotkeyBack = keybind.back()
 hotkeyTest = keybind.test()
 
 
+os.system('clear')
 print('> Receiving hotkey')
 
 if __debug__:
@@ -44,9 +45,7 @@ usage = '''<ctrl>+<alt>+<shift>+h = Begin working
 <esc> = Quit
 '''
 
-os.system('clear')
 print(usage)
-
 current = set()
 
 
