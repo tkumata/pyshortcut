@@ -11,26 +11,28 @@ from domain.keybind.KeyBind import KeyBind
 from interface.logger.Logger import Logger
 
 # オブジェクトやインスタンスの生成
+# Common
 initVar = Common()
 homedir = initVar.getHome()
 initVar.refreshScreen()
-
+# Logger
 log = Logger(homedir)
 logger = log.getLogger()
-
+# Slack
 slack = SlackCtrl(homedir, logger)
-
+# Keybind
 keybind = KeyBind(logger)
 hotkeyPunchin = keybind.punchIn()
 hotkeyPunchout = keybind.punchOut()
 hotkeyAwway = keybind.away()
 hotkeyBack = keybind.back()
 hotkeyTest = keybind.test()
-
+# init keybind
 current = set()
 
 
 # TODO: ロジックになっているので多純な呼び出しだけにできないか考える。
+# ここで Listener してるから無理？
 def on_press(key):
     if key in hotkeyPunchin:
         current.add(key)
